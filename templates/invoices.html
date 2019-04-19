@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="style.css" rel="stylesheet" type="text/css"/>
+
+    <title>Invoices</title>
+
+
+</head>
+<body>
+
+<div>
+        <form id="frmProducto" action="/addTransaction"  method="post">
+        <h3>Transactions: </h3>
+
+        <div class="form-row col-md-6">
+            <div class="form-group col-md-4">
+            <label>Category</label>
+            <input class="form-control" id="category" name="category">
+            </div>
+
+            <div class="form-group col-md-4">
+            <label>Type</label>
+            <input class="form-control" id="type" name="type">
+            </div>
+
+            <div class="form-group col-md-4">
+            <label>Quantity</label>
+            <input class="form-control" id="quantity" name="quantity">
+            </div>
+
+        </div>
+
+         <div class="form-row col-md-6">
+            <div class="form-group col-md-8">
+            <label>Description </label>
+            <input class="form-control" id="description" name="description">
+            </div>
+
+             <div class="form-group col-md-4">
+            <label>Date</label>
+            <input class="form-control" id="date" name="date" placeholder="YYYY-MM-DD">
+            </div>
+        </div>
+
+
+        <div class="form-group col-md-6">
+           <input type="submit" value="Add transaction" class="btn btn-primary">
+            <!--<a class="add btn btn-primary" href="#">Add transaction</a>-->
+        </div>
+    </form>
+
+    </div>
+
+<div id="invoices-container">
+   <table class="table">
+  <thead>
+    <tr>
+
+      <th scope="col">#</th>
+      <th scope="col">Category</th>
+      <th scope="col">Description</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Date</th>
+      <th scope="col">Actions</th>
+
+    </tr>
+  </thead>
+  <tbody>
+    {% set count = 0 %}
+    {% if transactions.count() > 0 %}
+    {% for transaction in transactions %}
+    {% set count = count + 1 %}
+        <tr >
+		    <th>{{ count }}</th>
+			<td>{{ transaction.category }}</td>
+			<td>{{ transaction.description }}</td>
+			<td>{{ transaction.quantity }}</td>
+			<td>{{ transaction.date }}</td>
+            <td>
+				<a class="edit btn btn-primary" href="#">Edit</a>
+				<a class="delete btn btn-danger" href="#">Delete</a>
+			</td>
+		</tr>
+    {% endfor %}
+    {% else %}
+    <b>No invoices found.</b>
+    {% endif %}
+
+  </tbody>
+</table>
+
+<p>{{ transactions.count() }}</p>
+<div id="dvError"
+    style="color:white;background-color:red;display:none">
+</div>
+
+
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+</body>
+</html>
