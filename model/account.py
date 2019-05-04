@@ -7,4 +7,4 @@ from user import User
 class Account(ndb.Model):
     name = ndb.StringProperty(required = True)
     description = ndb.StringProperty()
-    #owner = ndb.KeyProperty(kind=User)
+    id_user = ndb.StringProperty(required=True)

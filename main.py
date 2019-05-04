@@ -27,6 +27,7 @@ import time
 
 from model.transaction import Transaction
 from model.account import Account
+from model.user import User
 
 
 JINJA_ENVIRONMENT = jinja2.Environment(
@@ -42,50 +43,69 @@ class MainHandler(webapp2.RequestHandler):
             template = JINJA_ENVIRONMENT.get_template("/accounts")
             self.response.write(template);
         else:
-            template = JINJA_ENVIRONMENT.get_template("index.html")
-            self.response.write(template);
+            template = JINJA_ENVIRONMENT.get_template("templates/login.html")
+            self.response.write(template.render());
 
-        template = JINJA_ENVIRONMENT.get_template("index.html")
-        self.response.write(template.render());
 
 
 class LoginHandler(webapp2.RequestHandler):
     def get(self):
         user = users.get_current_user()
-        if user is None:
+        if user:
+            self.redirect("/accounts")
+        else:
             template_values = {
                 "title": "Login",
                 "login": "Please login",
-                "access_link": users.create_login_url("/home"),
+                "user_login": users.create_login_url("/"),
                 "content": "login"
             }
 
-            template = JINJA_ENVIRONMENT.get_template("index.html")
+            template = JINJA_ENVIRONMENT.get_template("templates/index.html")
             self.response.write(template.render(template_values))
-        else:
-            self.redirect("/home")
 
 
 
 class AccountHandler(webapp2.RequestHandler):
     def get(self):
+        user = users.get_current_user()
 
-        accounts = Account.query().order(Account.name)
+        if user == None:
+            self.redirect("/")
+        else:
+            # Look for the user's information
+            user_id = user.user_id()
+            name_info = user.nickname()
+            stored_user = User.query(User.id_user == user_id)
 
-        template_values = {
-            'accounts': accounts
-        }
+            if stored_user.count() == 0:
+                # Store the information
+                img = User(id_user=user_id, name=name_info)
+                img.put()
+                time.sleep(1)
 
-        template = JINJA_ENVIRONMENT.get_template("templates/accounts.html")
-        self.response.write(template.render(template_values));
+
+
+            accounts = Account.query(Account.id_user == user_id).order(Account.name)
+
+            template_values = {
+                'accounts': accounts,
+                'user_logout': users.create_logout_url("/"),
+                'user_id': user.user_id()
+            }
+
+            template = JINJA_ENVIRONMENT.get_template("templates/accounts.html")
+            self.response.write(template.render(template_values));
 
 class AddAccountHandler(webapp2.RequestHandler):
     def post(self):
+        user = users.get_current_user()
+
         name = self.request.get("nameAccount", "none")
         description = self.request.get("descriptionAccount", "none")
 
         #Store the answer
-        new_account = Account(name=name, description=description)
+        new_account = Account(name=name, description=description, id_user=user.user_id())
         new_account.put()
         time.sleep(1)
 
@@ -227,7 +247,7 @@ class DeleteAccountHandler(webapp2.RequestHandler):
 
 
 app = webapp2.WSGIApplication([
-    ('/', MainHandler),
+    ('/', LoginHandler),
     ('/accounts', AccountHandler),
     ('/addAccount', AddAccountHandler),
     ('/viewAccount', ViewAccountHandler),
