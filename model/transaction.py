@@ -11,4 +11,5 @@ class Transaction(ndb.Model):
     type = ndb.StringProperty(required = True)
     description = ndb.StringProperty()
     date = ndb.DateProperty()
-    #owner = ndb.KeyProperty(kind=User, required = True)
+    #owner = ndb.StringProperty(required = True)
+    account = ndb.KeyProperty(kind='Account')

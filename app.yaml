@@ -9,13 +9,9 @@ handlers:
   static_files: favicon.ico
   upload: favicon\.ico
 
-- url: /
-  static_files: templates/invoices.html
-  upload: invoices\.html
-
-- url: /index
-  static_files: index.html
-  upload: index\.html
+- url: /style\.css
+  static_files: style.css
+  upload: style\.css
 
 - url: .*
   script: main.app
