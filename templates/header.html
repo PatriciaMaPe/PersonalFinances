@@ -1,0 +1,114 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script type="text/javascript" src="http://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <link href="style.css" rel="stylesheet" type="text/css"/>
+
+
+    <title>{{ title }}</title>
+
+    <script>
+
+        $(document).ready(
+		function() {
+
+
+            $('#transactionModal').on('show.bs.modal', function (event) {
+
+                var button = $(event.relatedTarget); // Button that triggered the modal
+
+                var key = button.data('key');
+                var category = button.data('category');
+                var type = button.data('type');
+                var description = button.data('description');
+                var quantity = button.data('quantity');
+                var date = button.data('date');
+
+                var modal = $(this);
+                modal.find('#keyModal').val(key);
+                modal.find('#categoryModal').val(category);
+                modal.find('#typeModal').val(type);
+                modal.find('#descriptionModal').val(description);
+                modal.find('#quantityModal').val(quantity);
+                modal.find('#dateModal').val(date);
+            })
+
+
+            $('#deleteModal').on('show.bs.modal', function (event) {
+
+                var button = $(event.relatedTarget); // Button that triggered the modal
+                var key = button.data('key');
+
+                var modal = $(this);
+                modal.find('#keyModalDelete').val(key);
+            })
+
+
+        });
+
+        function deleteTransaction(key){
+            console.log("Borrar");
+            console.log(key);
+        }
+
+        function hideError() {
+			document.getElementById( "dvError" ).style.display = "none";
+		}
+		function showError(msg) {
+			var dvError = document.getElementById( "dvError" );
+			var pError = document.createElement( "p" );
+			dvError.innerHTML = "";
+			dvError.appendChild( pError );
+			pError.appendChild( document.createTextNode( msg ) );
+			dvError.style.display = "block";
+		}
+
+        function chk() {
+			var toret = true;
+			var edQuantity = document.getElementById( "quantity" );
+			var edDate = document.getElementById( "date" );
+			hideError();
+			if ( edQuantity.value.trim().length == 0 | edDate.value.trim().length == 0) {
+				showError( "Campo requerido" );
+				toret = false;
+			}
+			var quantity = parseFloat( edQuantity.value );
+
+            /*if(isNaN(quantity)){
+                showError( "La cantidad debe ser un numero" );
+				toret = false;
+            }*/
+			if ( quantity < 0 ) {
+				showError( "La cantidad debe ser un numero positivo" );
+				toret = false;
+			}
+			if ( moment(edDate, 'YYYY-MM-DD',true).isValid() ) {
+				showError( "Formato de fecha debe ser: YYYY-MM-DD" );
+				toret = false;
+			}
+			return toret;
+		}
+
+		function chkAccount() {
+			var toret = true;
+			var edNameAccount = document.getElementById( "nameAccount" );
+			hideError();
+
+			if ( edNameAccount.value.trim().length == 0) {
+				showError( "El nombre de la cuenta es un campo requerido" );
+				toret = false;
+			}
+			return toret;
+		}
+
+
+    </script>
+
+
+</head>

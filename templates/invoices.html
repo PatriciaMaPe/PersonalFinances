@@ -1,83 +1,44 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+{% include 'header.html'  %}
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script type="text/javascript" src="http://code.jquery.com/jquery-2.2.4.min.js"></script>
-    <link href="style.css" rel="stylesheet" type="text/css"/>
-
-
-    <title>Invoices</title>
-
-    <script>
-
-        $(document).ready(
-		function() {
-
-
-            $('#transactionModal').on('show.bs.modal', function (event) {
-
-                var button = $(event.relatedTarget); // Button that triggered the modal
-
-                var key = button.data('key');
-                var category = button.data('category');
-                var type = button.data('type');
-                var description = button.data('description');
-                var quantity = button.data('quantity');
-                var date = button.data('date');
-
-                var modal = $(this);
-                modal.find('#keyModal').val(key);
-                modal.find('#categoryModal').val(category);
-                modal.find('#typeModal').val(type);
-                modal.find('#descriptionModal').val(description);
-                modal.find('#quantityModal').val(quantity);
-                modal.find('#dateModal').val(date);
-            })
-
-
-            $('#deleteModal').on('show.bs.modal', function (event) {
-
-                var button = $(event.relatedTarget); // Button that triggered the modal
-                var key = button.data('key');
-
-                var modal = $(this);
-                modal.find('#keyModalDelete').val(key);
-            })
-
-
-        });
-
-        function deleteTransaction(key){
-            console.log("Borrar");
-            console.log(key);
-        }
-
-
-    </script>
-
-
-</head>
 <body>
+
+{% include 'navbar.html'  %}
+
+
+{% if msg_error != None %}
+<div id="errorMessage" class="alert alert-danger" role="alert">
+    {{msg_error}}
+</div>
+
+{% endif %}
 
 <a class="btn btn-outline-dark" href="/accounts"> Volver a Cuentas </a>
 
 <div>
-        <form id="frmTransaction" action="/addTransaction?key={{account_key.urlsafe()}}"  method="post">
+        <form id="frmTransaction" onSubmit="return chk();" action="/addTransaction?key={{account_key.urlsafe()}}"   method="post">
         <h3>Transactions: </h3>
         <div class="form-row col-md-6">
+
             <div class="form-group col-md-4">
             <label>Category</label>
-            <input class="form-control" id="category" name="category">
+            <select class="form-control" id="category" name="category">
+                <option>Educacion</option>
+                <option>Entretenimiento</option>
+                <option>Familia</option>
+                <option>Comida</option>
+                <option>Viaje</option>
+                <option>Deuda</option>
+                <option>Regalo</option>
+                <option>Otros</option>
+            </select>
             </div>
 
             <div class="form-group col-md-4">
             <label>Type</label>
-            <input class="form-control" id="type" name="type">
+            <select class="form-control" id="type" name="type">
+                <option>Ingreso</option>
+                <option>Gasto</option>
+            </select>
             </div>
 
             <div class="form-group col-md-4">
@@ -162,9 +123,6 @@
 </div>
 
 
-<p>{{ transactions.count() }}</p>
-
-
     <!-- Modal -->
 
 <div class="modal fade" id="transactionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -177,16 +135,29 @@
         </button>
       </div>
       <div class="modal-body">
-        <form id="frmModalTransaction" action="/editTransaction?key_account={{account_key.urlsafe()}}"  method="post">
+        <form id="frmModalTransaction" onSubmit="return chk();" action="/editTransaction?key_account={{account_key.urlsafe()}}"  method="post">
 
           <div class="form-group">
             <input id="keyModal" type="text" name="key" class="form-control-plaintext" style="display: none;" readonly>
 
             <label for="message-text" class="col-form-label">Categoria:</label>
-            <input id="categoryModal" type="text" name="category" class="form-control">
+              <select class="form-control" id="categoryModal" name="category">
+                <option>Educacion</option>
+                <option>Entretenimiento</option>
+                <option>Familia</option>
+                <option>Comida</option>
+                <option>Viaje</option>
+                <option>Deuda</option>
+                <option>Regalo</option>
+                <option>Otros</option>
+            </select>
+            </div>
 
             <label for="message-text" class="col-form-label">Tipo:</label>
-            <input id="typeModal" type="text" name="type" class="form-control">
+            <select class="form-control" id="typeModal" name="type">
+                <option>Ingreso</option>
+                <option>Gasto</option>
+            </select>
 
             <label for="message-text" class="col-form-label">Descripcion</label>
             <input id="descriptionModal" type="text" name="description" class="form-control">
@@ -223,7 +194,7 @@
       </div>
 
       <div class="modal-body">
-           <form id="frmModalDelete" action="/deleteTransaction"  method="post">
+           <form id="frmModalDelete" action="/deleteTransaction?key_account={{account_key.urlsafe()}}"  method="post">
 
           <div class="form-group">
 
@@ -246,16 +217,4 @@
 </div>
 <!-- !Delete Modal -->
 
-
-<div id="dvError"
-    style="color:white;background-color:red;display:none">
-</div>
-
-
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
-</body>
-</html>
+{% include 'footer.html'  %}

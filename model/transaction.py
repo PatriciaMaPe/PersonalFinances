@@ -1,13 +1,11 @@
-# Producto
+
 from google.appengine.ext import ndb
-from category import Category
-from user import User
 
 
 class Transaction(ndb.Model):
-    category = ndb.StringProperty(required = True)
-    quantity = ndb.IntegerProperty(required = True)
-    type = ndb.StringProperty(required = True)
+    category = ndb.StringProperty(required = True, choices=["Educacion", "Entretenimiento", "Familia", "Comida", "Viaje", "Deuda", "Regalo", "Otros"])
+    quantity = ndb.FloatProperty(required = True)
+    type = ndb.StringProperty(required = True, choices=["Ingreso", "Gasto"])
     description = ndb.StringProperty()
     date = ndb.DateProperty()
     account = ndb.KeyProperty(kind='Account')
