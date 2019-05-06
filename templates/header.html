@@ -7,7 +7,7 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script type="text/javascript" src="http://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
     <link href="style.css" rel="stylesheet" type="text/css"/>
 
 
@@ -20,7 +20,6 @@
 
 
             $('#transactionModal').on('show.bs.modal', function (event) {
-
                 var button = $(event.relatedTarget); // Button that triggered the modal
 
                 var key = button.data('key');
@@ -89,6 +88,32 @@
 				toret = false;
 			}
 			if ( moment(edDate, 'YYYY-MM-DD',true).isValid() ) {
+				showError( "Formato de fecha debe ser: YYYY-MM-DD" );
+				toret = false;
+			}
+			return toret;
+		}
+
+		function chkModalEdit() {
+			var toret = true;
+			var edQuantityModal = document.getElementById( "quantityModal" );
+			var edDateModal = document.getElementById( "dateModal" );
+			hideError();
+			if ( edQuantityModal.value.trim().length == 0 | edDateModal.value.trim().length == 0) {
+				showError( "Campo requerido" );
+				toret = false;
+			}
+			var quantity = parseFloat( edQuantityModal.value );
+
+            /*if(isNaN(quantity)){
+                showError( "La cantidad debe ser un numero" );
+				toret = false;
+            }*/
+			if ( quantity < 0 ) {
+				showError( "La cantidad debe ser un numero positivo" );
+				toret = false;
+			}
+			if ( moment(edDateModal, 'YYYY-MM-DD',true).isValid() ) {
 				showError( "Formato de fecha debe ser: YYYY-MM-DD" );
 				toret = false;
 			}

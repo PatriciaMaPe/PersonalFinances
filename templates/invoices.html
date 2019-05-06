@@ -12,11 +12,17 @@
 
 {% endif %}
 
-<a class="btn btn-outline-dark" href="/accounts"> Volver a Cuentas </a>
+<a id="back-btn" class="btn btn-outline-dark" href="/accounts"> Back to Accounts </a>
 
-<div>
+<div class="container" id="section-title">
+    <h3>Transactions </h3>
+</div>
+
+<div class="container">
+
+<div id="container-transactions">
         <form id="frmTransaction" onSubmit="return chk();" action="/addTransaction?key={{account_key.urlsafe()}}"   method="post">
-        <h3>Transactions: </h3>
+
         <div class="form-row col-md-6">
 
             <div class="form-group col-md-4">
@@ -66,12 +72,13 @@
 
         </div>
     </form>
-
+</div>
     </div>
 
-<div id="invoices-container">
-   <table class="table">
-  <thead>
+<div class="container" id="invoices-container">
+    <div class="row">
+   <table class="table table-hover">
+  <thead class="thead-dark">
     <tr>
 
       <th scope="col">#</th>
@@ -104,7 +111,7 @@
                       data-quantity="{{ transaction.quantity }}"
                       data-date="{{ transaction.date }}"
                       data-account-key = "{{ account_key.urlsafe() }}"
-                      >Editar</a>
+                      >Edit</a>
 
 				<a class="delete btn btn-danger" href="#"
                    data-target="#deleteModal" data-toggle="modal"
@@ -120,6 +127,8 @@
 
   </tbody>
 </table>
+    </div>
+    </div>
 </div>
 
 
@@ -135,7 +144,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <form id="frmModalTransaction" onSubmit="return chk();" action="/editTransaction?key_account={{account_key.urlsafe()}}"  method="post">
+        <form id="frmModalTransaction" onSubmit="return chkModalEdit();" action="/editTransaction?key_account={{account_key.urlsafe()}}"  method="post">
 
           <div class="form-group">
             <input id="keyModal" type="text" name="key" class="form-control-plaintext" style="display: none;" readonly>
@@ -169,14 +178,13 @@
             <input id="dateModal" name="date" type="text" class="form-control">
 
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-              <button type="submit" class="btn btn-primary">Modificar</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-primary">Edit</button>
           </div>
         </div>
         </form>
       </div>
 
-    </div>
   </div>
 </div>
 <!-- !Edit Modal -->
@@ -204,8 +212,8 @@
 
 
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-              <button type="submit" class="btn btn-primary">Borrar</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-primary">Delete</button>
           </div>
         </div>
         </form>

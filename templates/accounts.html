@@ -5,38 +5,44 @@
 
 {% include 'navbar.html'  %}
 
-<div>
-        <form id="frmAccount" onSubmit="return chkAccount();" action="/addAccount"  method="post">
-        <h3>Accounts: </h3>
+<div id="dvError" class="alert alert-danger" role="alert"
+    style="display:none">
+</div>
+<div class="container accounts" id="section-title">
+    <h3>Accounts </h3>
+</div>
 
-        <div class="form-row col-md-6">
-            <div class="form-group col-md-6">
-            <label>Name</label>
-            <input class="form-control" id="nameAccount" name="nameAccount">
+<div class="container">
+    <div id="container-transactions" >
+
+        <form class="form-inline" id="frmAccount" onSubmit="return chkAccount();" action="/addAccount"  method="post">
+
+
+
+            <div class="form-group mb-2">
+
+            <input class="form-control" id="nameAccount" name="nameAccount" placeholder="Name">
             </div>
 
-        </div>
+            <div class="form-group mx-sm-3  mb-2">
 
-         <div class="form-row col-md-6">
-            <div class="form-group col-md-6">
-            <label>Description </label>
-            <input class="form-control" id="descriptionAccount" name="descriptionAccount">
+            <input class="form-control" id="descriptionAccount" name="descriptionAccount" placeholder="Description">
             </div>
 
-        </div>
+           <input type="submit" value="Add account" class="btn btn-primary mb-2">
 
 
-        <div class="form-group col-md-6">
-           <input type="submit" value="Add account" class="btn btn-primary">
 
-        </div>
+
+
     </form>
-
+</div>
     </div>
 
-<div id="accounts-container">
-   <table class="table">
-  <thead>
+<div id="accounts-container" class="container">
+    <div class="row">
+   <table class="table table-hover">
+  <thead class="thead-dark">
     <tr>
 
       <th scope="col">#</th>
@@ -54,8 +60,8 @@
 			<td>{{ account.name }}</td>
 			<td>{{ account.description }}</td>
             <td>
-                <a class="edit btn btn-primary" href="/deleteAccount?key={{account.key.urlsafe()}}"> Borrar </a>
-                <a class="edit btn btn-primary" href="/viewAccount?key={{account.key.urlsafe()}}"> Seleccionar </a>
+                <a class="edit btn btn-primary" href="/deleteAccount?key={{account.key.urlsafe()}}"> Delete </a>
+                <a class="edit btn btn-primary" href="/viewAccount?key={{account.key.urlsafe()}}"> View </a>
 			</td>
 		</tr>
     {% endfor %}
@@ -65,13 +71,7 @@
 
   </tbody>
 </table>
-</div>
-
-
-<p>{{ accounts.count() }}</p>
-
-<div id="dvError"
-    style="color:white;background-color:red;display:none">
+    </div>
 </div>
 
 
