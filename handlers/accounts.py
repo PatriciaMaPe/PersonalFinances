@@ -35,6 +35,7 @@ class AccountHandler(webapp2.RequestHandler):
             template_values = {
                 'title': "Accounts",
                 'accounts': accounts,
+                'user_nickname': user.nickname(),
                 'user_logout': users.create_logout_url("/"),
                 'user_id': user.user_id()
             }
@@ -67,14 +68,7 @@ class DeleteAccountHandler(webapp2.RequestHandler):
 
         time.sleep(1)
 
-        accounts = Account.query().order(Account.name)
-
-        template_values = {
-            'accounts': accounts
-        }
-
-        template = JINJA_ENVIRONMENT.get_template("accounts.html")
-        self.response.write(template.render(template_values));
+        self.redirect("/accounts")
 
 
 

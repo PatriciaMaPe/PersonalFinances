@@ -13,6 +13,7 @@ from enviroment import JINJA_ENVIRONMENT
 class ViewTransactionsHandler(webapp2.RequestHandler):
     def get(self):
         user = users.get_current_user()
+        user.nickname()
         try:
             msg_error = self.request.GET['msg_error']
         except:
@@ -22,12 +23,13 @@ class ViewTransactionsHandler(webapp2.RequestHandler):
 
         account_key = ndb.Key(urlsafe=key)
 
-        transactions = Transaction.query(Transaction.account == account_key)
+        transactions = Transaction.query(Transaction.account == account_key).order(-Transaction.date)
 
         template_values = {
             'title': "Transactions",
             'account_key': account_key,
             'transactions': transactions,
+            'user_nickname': user.nickname(),
             'user_logout': users.create_logout_url("/"),
             'user_id': user.user_id(),
             'msg_error': msg_error

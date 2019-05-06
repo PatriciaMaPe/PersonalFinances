@@ -15,11 +15,6 @@ indexes:
   - name: id_user
   - name: name
 
-- kind: Account
-  properties:
-  - name: owner
-  - name: name
-
 - kind: Transaction
   properties:
   - name: account
